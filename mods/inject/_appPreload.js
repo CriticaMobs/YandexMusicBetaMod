@@ -8,7 +8,7 @@ electron_1.contextBridge.exposeInMainWorld("_ModDownloader", {
   save(url, name, openFolder = true) {
     console.log("Backend get download request: ", url);
 
-    const saveFolder = process.env.USERPROFILE + "\\YandexMod Download";
+    //%PATCHER_SAVE_FOLDER;
     if (!fs.existsSync(saveFolder)) {
       fs.mkdirSync(saveFolder, { recursive: true });
     }
@@ -24,7 +24,7 @@ electron_1.contextBridge.exposeInMainWorld("_ModDownloader", {
     });
   },
   openFolder() {
-    const saveFolder = process.env.USERPROFILE + "\\YandexMod Download";
+    //%PATCHER_SAVE_FOLDER;
     require("child_process").exec('start "" "' + saveFolder + '"');
   },
 });
