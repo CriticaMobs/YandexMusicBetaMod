@@ -39,6 +39,7 @@
             airCheckBox1 = new ReaLTaiizor.Controls.AirCheckBox();
             airCheckBox5 = new ReaLTaiizor.Controls.AirCheckBox();
             label2 = new Label();
+            saveButton = new ReaLTaiizor.Controls.Button();
             button1 = new ReaLTaiizor.Controls.Button();
             button2 = new ReaLTaiizor.Controls.Button();
             button3 = new ReaLTaiizor.Controls.Button();
@@ -80,6 +81,7 @@
             tableLayoutPanel1.Controls.Add(airCheckBox2, 0, 2);
             tableLayoutPanel1.Controls.Add(airCheckBox1, 0, 0);
             tableLayoutPanel1.Controls.Add(airCheckBox5, 0, 4);
+            tableLayoutPanel1.Controls.Add(saveButton, 0, 6);
             tableLayoutPanel1.Location = new Point(12, 32);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 6;
@@ -89,6 +91,7 @@
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 16.666666F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 16.666666F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 16.666666F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 20.666666F));
             tableLayoutPanel1.Size = new Size(284, 145);
             tableLayoutPanel1.TabIndex = 13;
             // 
@@ -208,6 +211,28 @@
             label2.Size = new Size(303, 60);
             label2.TabIndex = 5;
             label2.Text = "Наведите мышкой на мод чтобы узнать подробности";
+            //
+            // saveButton
+            //
+            saveButton.AccessibleDescription = "Укажите куда будет устанавливаться музыка.";
+            saveButton.Dock = DockStyle.Bottom;
+            saveButton.BackColor = Color.Transparent;
+            saveButton.BorderColor = Color.FromArgb(63, 104, 249);
+            saveButton.EnteredBorderColor = Color.FromArgb(37, 84, 248);
+            saveButton.EnteredColor = Color.FromArgb(37, 84, 248);
+            saveButton.Font = new Font("Segoe UI", 9.75F);
+            saveButton.Image = null;
+            saveButton.ImageAlign = ContentAlignment.MiddleLeft;
+            saveButton.InactiveColor = Color.FromArgb(63, 104, 249);
+            saveButton.Location = new Point(17, 269);
+            saveButton.Name = "saveButton";
+            saveButton.PressedBorderColor = Color.FromArgb(13, 64, 247);
+            saveButton.PressedColor = Color.FromArgb(13, 64, 247);
+            saveButton.Size = new Size(121, 40);
+            saveButton.TabIndex = 6;
+            saveButton.Text = "Сохранение";
+            saveButton.TextAlignment = StringAlignment.Center;
+            
             // 
             // button1
             // 
@@ -313,6 +338,7 @@
         private Label label1;
         private GroupBox groupBoxMods;
         private Label label2;
+        private ReaLTaiizor.Controls.Button saveButton;
         private ReaLTaiizor.Controls.Button button1;
         private ReaLTaiizor.Controls.Button button2;
         private ReaLTaiizor.Controls.AirCheckBox airCheckBox1;

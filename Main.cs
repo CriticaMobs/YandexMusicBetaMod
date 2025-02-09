@@ -59,37 +59,57 @@ namespace YandexMusicPatcherGui
 
             var _mouseInCheckbox = false;
 
-            foreach (ReaLTaiizor.Controls.AirCheckBox checkbox in tableLayoutPanel1.Controls
-                         .OfType<ReaLTaiizor.Controls.AirCheckBox>())
+            foreach (var control in tableLayoutPanel1.Controls)
             {
-                checkbox.Checked = Program.Config.Mods.First(x => x.Tag == checkbox.Tag.ToString()).Enabled;
-                checkbox.MouseEnter += (s, e) =>
+                if (control is ReaLTaiizor.Controls.AirCheckBox checkbox)
                 {
-                    var checkbox = (ReaLTaiizor.Controls.AirCheckBox)s;
-                    label2.Text = checkbox.AccessibleDescription;
-                    _mouseInCheckbox = true;
-                };
-                checkbox.MouseLeave += (s, e) => { _mouseInCheckbox = false; };
-                checkbox.CheckedChanged += (s) =>
-                {
-                    var cb = (ReaLTaiizor.Controls.AirCheckBox)s;
-                    var tag = cb.Tag.ToString();
-
-                    if (tag == "usePlusUnlocker")
+                    checkbox.Checked = Program.Config.Mods.First(x => x.Tag == checkbox.Tag.ToString()).Enabled;
+                    checkbox.MouseEnter += (s, e) =>
                     {
-                        if (!cb.Checked)
-                            cb.Checked = true;
-                        return;
-                    }
+                        label2.Text = checkbox.AccessibleDescription;
+                    };
+                    checkbox.MouseLeave += (s, e) => { label2.Text = "Наведите мышкой на мод, чтобы узнать подробности"; };
+                    checkbox.CheckedChanged += (s) =>
+                    {
+                        var cb = (ReaLTaiizor.Controls.AirCheckBox)s;
+                        var tag = cb.Tag.ToString();
+                        var changedModIndex = Program.Config.Mods.FindIndex(x => x.Tag == tag);
+                        if (changedModIndex != -1)
+                        {
+                            Program.Config.Mods[changedModIndex].Enabled = cb.Checked;
+                            File.WriteAllText("config.json",
+                                JsonConvert.SerializeObject(Program.Config, Formatting.Indented));
+                        }
+                    };
+                }
+                else if (control is ReaLTaiizor.Controls.Button button)
+                {
+                    button.MouseEnter += (s, e) =>
+                    {
+                        label2.Text = button.AccessibleDescription;
+                    };
+                    button.MouseLeave += (s, e) => { label2.Text = "Наведите мышкой на мод, чтобы узнать подробности"; };
+                    button.Click += (s, e) =>
+                    {
+                        using (FolderBrowserDialog folderDialog = new FolderBrowserDialog())
+                        {
+                            folderDialog.Description = "Выберите папку для сохранения песен";
+                            folderDialog.SelectedPath = Program.Config.SavePath ?? Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
+            
+                            if (folderDialog.ShowDialog() == DialogResult.OK)
+                            {
+                                Program.Config.SavePath = folderDialog.SelectedPath;
+                                File.WriteAllText("config.json",
+                                    JsonConvert.SerializeObject(Program.Config, Formatting.Indented));
+                                MessageBox.Show($"Песни будут сохранены в:\n{Program.Config.SavePath}", "Путь сохранения", 
+                                    MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    var changedModIndex = Program.Config.Mods.FindIndex(x => x.Tag == tag);
-                    if (changedModIndex == -1)
-                        return;
-                    Program.Config.Mods[changedModIndex].Enabled = cb.Checked;
-                    File.WriteAllText("config.json",
-                        JsonConvert.SerializeObject(Program.Config, Formatting.Indented));
-                };
+                            }
+                        }
+                    };
+                }
             }
+
 
             MouseMove += (s, e) =>
             {
