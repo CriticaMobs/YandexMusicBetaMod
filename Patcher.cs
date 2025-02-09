@@ -7,6 +7,7 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Microsoft.VisualBasic.Logging;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 using YandexMusicPatcherGui.Models;
@@ -83,8 +84,11 @@ namespace YandexMusicPatcherGui
             }
 
             // Добавить _appPreload.js в исходный preload.js приложения
+            String appPreload = File.ReadAllText("mods/inject/_appPreload.js").Replace("//%PATCHER_SAVE_FOLDER",
+                "const saveFolder = '%folder'".Replace("%folder", Program.Config.SavePath));
+            //Onlog?.Invoke("Patcher", appPreload);
             File.WriteAllText(Path.Combine(appPath, "main/lib/preload.js"),
-                File.ReadAllText(Path.Combine(appPath, "main/lib/preload.js")) + File.ReadAllText("mods/inject/_appPreload.js"));
+                File.ReadAllText(Path.Combine(appPath, "main/lib/preload.js")) + appPreload);
 
             // Ручной инжект инициализатора модов в html страницы, тк электроновский preload скипт не всегда работает
             foreach (var file in Directory.GetFiles(Path.Combine(appPath, "app"), "*.html",
