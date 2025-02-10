@@ -82,14 +82,16 @@ namespace YandexMusicPatcherGui
                 await process.WaitForExitAsync();
 
             }
+            //Обрабатываем и изменяем _appPreload.js
+            String appPreload = File.ReadAllText("mods/inject/_appPreload.js")
+                .Replace("//%PATCHER_SAVE_FOLDER", 
+                    "const saveFolder = \"" + Program.Config.SavePath.Replace("\\", "\\\\") + "\";");
 
-            // Добавить _appPreload.js в исходный preload.js приложения
-            String appPreload = File.ReadAllText("mods/inject/_appPreload.js").Replace("//%PATCHER_SAVE_FOLDER",
-                "const saveFolder = '%folder'".Replace("%folder", Program.Config.SavePath));
+
             //Onlog?.Invoke("Patcher", appPreload);
+            // Добавить _appPreload.js в исходный preload.js приложения
             File.WriteAllText(Path.Combine(appPath, "main/lib/preload.js"),
                 File.ReadAllText(Path.Combine(appPath, "main/lib/preload.js")) + appPreload);
-
             // Ручной инжект инициализатора модов в html страницы, тк электроновский preload скипт не всегда работает
             foreach (var file in Directory.GetFiles(Path.Combine(appPath, "app"), "*.html",
                          SearchOption.AllDirectories))
